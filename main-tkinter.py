@@ -9,13 +9,19 @@ model_id = "meta-llama/Llama-3.2-3B-Instruct"
 pipe = pipeline(
     "text-generation",
     model=model_id,
+<<<<<<< HEAD
     torch_dtype=torch.bfloat16,
     device_map="auto",
+=======
+    torch_dtype="auto",
+    device_map="cpu",
+>>>>>>> 0b52b8e (cool fixes)
 )
 
 # Pesan sistem tetap untuk mengarahkan chatbot
 system_message = "You are a pirate chatbot who always responds in pirate speak!"
 
+<<<<<<< HEAD
 def extract_assistant_text(generated_data):
     """
     Fungsi ini memeriksa apakah generated_data berupa list pesan.
@@ -33,6 +39,8 @@ def extract_assistant_text(generated_data):
     else:
         # Jika bukan list, kembalikan apa adanya (atau bisa disesuaikan dengan kebutuhan)
         return str(generated_data)
+=======
+>>>>>>> 0b52b8e (cool fixes)
 
 def generate_text():
     # Nonaktifkan tombol generate agar tidak terjadi panggilan berulang
@@ -41,6 +49,7 @@ def generate_text():
     # Ambil prompt dari kotak teks
     prompt = prompt_entry.get("1.0", tk.END).strip()
     
+<<<<<<< HEAD
     # Buat pesan dengan kombinasi pesan sistem dan pesan pengguna
     messages = [
         {"role": "system", "content": system_message},
@@ -59,6 +68,27 @@ def generate_text():
     # Tampilkan hasil pada area output
     output_text.delete("1.0", tk.END)
     output_text.insert(tk.END, generated)
+=======
+    # Gabungkan pesan sistem dan prompt pengguna menjadi satu string
+    full_prompt = f"{prompt}"
+    
+    print("Generating...")  # Debug print
+    try:
+        outputs = pipe(full_prompt, max_new_tokens=64)
+        print("Done generating!")  # Debug print
+        generated = outputs[0]["generated_text"]
+        # Get only the text after "Pirate:"
+        pirate_reply = generated.split("Pirate:")[-1].strip()
+        # If nothing after "Pirate:", show the whole generated text
+        if not pirate_reply:
+            pirate_reply = generated.strip()
+    except Exception as e:
+        pirate_reply = f"Error: {e}"
+    
+    # Tampilkan hasil pada area output
+    output_text.delete("1.0", tk.END)
+    output_text.insert(tk.END, pirate_reply)
+>>>>>>> 0b52b8e (cool fixes)
     
     # Aktifkan kembali tombol generate
     generate_button.config(state=tk.NORMAL)
